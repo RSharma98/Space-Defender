@@ -6,11 +6,14 @@ public class PlayerController : MonoBehaviour {
 
 	Camera cam;
 	Vector3 mousePos;
+	Vector2 pos;
 
+	public Texture2D crosshair;
 	[SerializeField] float rotSpeed;
+	[SerializeField] float moveSpeed;
 
-	// Use this for initialization
 	void Start () {
+		Cursor.SetCursor(crosshair, Vector2.zero, CursorMode.Auto);
 		cam = Camera.main;
 	}
 	
@@ -22,5 +25,9 @@ public class PlayerController : MonoBehaviour {
         float angleDeg = (180 / Mathf.PI) * angleRad;	//Convert the angle to degrees
 		// Rotate Object
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, angleDeg), rotSpeed * Time.deltaTime);
+
+		pos = transform.position;
+		pos += moveSpeed * transform.right * Time.deltaTime * Input.GetAxisRaw("Vertical");
+		transform.position = pos;
 	}
 }
